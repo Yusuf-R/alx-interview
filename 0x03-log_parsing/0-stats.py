@@ -1,71 +1,88 @@
-#!/usr/bin/python3
-""" This is my problem :'v """
+#!/usr/bin/env python3
+
 import sys
-import re
-import signal
-from collections import OrderedDict
+from collections import defaultdict
 
 
-def search_items(line, s):
-    """ Search the items to positionate """
-    regexu = r"\s\d{3}\s\d{1,}"
-    txt = re.search(regexu, line)
-    word = txt.group()
-    word = word[1:]
+def search_items(line, status_codes):
+    """
+    A function that searches for items in a line and
+    updates a dictionary of status codes.
 
-    regexd = r"\d{3}\s"
-    left = re.search(regexd, word)
+    Parameters:
+        line (str): The line to search for items.
+        status_codes (dict): A dictionary containing
+        status codes as keys and their respective counts as values.
 
-    code = left.group()
-    code = code[:-1]
-
-    regext = r"\s\d{1,}"
-    right = re.search(regext, word)
-
-    size = right.group()
-    size = size[1:]
-    size = int(size)
-
-    add_code(code, s)
-
-    return size
-
-
-def add_code(code, codes):
-    """ Count the status code """
+    Returns:
+        int: The size of the item found in the line,
+        or 0 if no item is found.
+    """
     try:
-        codes[code] += 1
-    except KeyError:
+        parts = line.split()
+        if len(parts) >= 7:
+            status = int(parts[-2])
+            size = int(parts[-1])
+            if size > 0 and status > 0:
+                status_codes[status] += 1
+                return size
+    except (ValueError, IndexError):
         pass
+    return 0
 
 
-def print_all(stat):
-    """ Print all """
-    stat = OrderedDict(stat)
+def print_statistics(total_size, status_codes):
+    """
+    Prints the statistics of a file, including its total
+    size and the count of each status code.
 
-    for key, value in stat.items():
-        if value is not 0:
-            print("{}: {}".format(key, value))
+    Parameters:
+        total_size (int): The total size of the file.
+        status_codes (dict): A dictionary containing
+        the status codes and their corresponding counts.
+
+    Returns:
+        None
+    """
+    print(f"File size: {total_size}")
+    for code, count in sorted(status_codes.items()):
+        if count > 0:
+            print(f"{code}: {count}")
 
 
-if __name__ == "__main__":
-    status = {"200": 0, "301": 0, "400": 0, "401": 0,
-              "403": 0, "404": 0, "405": 0, "500": 0}
-    file_size = 0
+def main():
+    """
+    A module that performs log parsing and statistics calculations.
+
+    This module provides functions to search for items
+    in log lines, update a dictionary of status codes,
+    and print the statistics of a file,
+    including its total size and the count of each status code.
+
+    Functions:
+        search_items(line, status_codes)
+        print_statistics(total_size, status_codes)
+        main()
+    """
+    status_codes = defaultdict(int)
+    total_size = 0
     i = 0
 
     try:
-        for lines in sys.stdin:
-            file_size += search_items(lines, status)
+        for line in sys.stdin:
+            print(line)
+            total_size += search_items(line, status_codes)
 
-            if i is not 0 and i % 9 == 0:
-                print("File size: {:d}".format(file_size))
-                print_all(status)
+            if i != 0 and i % 9 == 0:
+                print_statistics(total_size, status_codes)
 
             i += 1
+
     except KeyboardInterrupt:
         pass
     finally:
-        print("File size: {:d}".format(file_size))
-        print_all(status)
-        sys.exit(0)
+        print_statistics(total_size, status_codes)
+
+
+if __name__ == "__main__":
+    main()
