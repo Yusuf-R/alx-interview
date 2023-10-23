@@ -7,7 +7,7 @@ from collections import OrderedDict
 
 
 def search_items(line, s):
-    """ Search the items to positionate """
+    """Search the items to positionate"""
     regexu = r"\s\d{3}\s\d{1,}"
     txt = re.search(regexu, line)
     word = txt.group()
@@ -32,7 +32,7 @@ def search_items(line, s):
 
 
 def add_code(code, codes):
-    """ Count the status code """
+    """Count the status code"""
     try:
         codes[code] += 1
     except KeyError:
@@ -40,7 +40,7 @@ def add_code(code, codes):
 
 
 def print_all(stat):
-    """ Print all """
+    """Print all"""
     stat = OrderedDict(stat)
 
     for key, value in stat.items():
@@ -49,8 +49,16 @@ def print_all(stat):
 
 
 if __name__ == "__main__":
-    status = {"200": 0, "301": 0, "400": 0, "401": 0,
-              "403": 0, "404": 0, "405": 0, "500": 0}
+    status = {
+        "200": 0,
+        "301": 0,
+        "400": 0,
+        "401": 0,
+        "403": 0,
+        "404": 0,
+        "405": 0,
+        "500": 0,
+    }
     file_size = 0
     i = 0
 
@@ -69,4 +77,3 @@ if __name__ == "__main__":
         print("File size: {:d}".format(file_size))
         print_all(status)
         sys.exit(0)
-
