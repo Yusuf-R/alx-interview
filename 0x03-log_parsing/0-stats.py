@@ -45,10 +45,10 @@ def print_statistics(total_size, status_codes):
     Returns:
         None
     """
-    print(f"File size: {total_size}")
+    print("File size: {}".format(total_size))
     for code, count in sorted(status_codes.items()):
         if count > 0:
-            print(f"{code}: {count}")
+            print("{}: {}".format(code, count))
 
 
 def main():
@@ -71,7 +71,6 @@ def main():
 
     try:
         for line in sys.stdin:
-            print(line)
             total_size += search_items(line, status_codes)
 
             if i != 0 and i % 9 == 0:
