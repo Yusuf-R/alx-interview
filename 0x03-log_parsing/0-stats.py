@@ -79,8 +79,9 @@ def main():
     try:
         for line in sys.stdin:
             size = search_items(line, status_codes)
-            if size is not None:
-                total_size += size
+            if size is None:
+                continue
+            total_size += size
 
             if i != 0 and i % 9 == 0:
                 print_statistics(total_size, status_codes)
