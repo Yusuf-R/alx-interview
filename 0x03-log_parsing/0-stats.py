@@ -3,6 +3,7 @@
 
 import sys
 from collections import defaultdict
+import re
 
 
 def search_items(line, status_codes):
@@ -19,16 +20,19 @@ def search_items(line, status_codes):
         int: The size of the item found in the line,
         or 0 if no item is found.
     """
-    try:
-        parts = line.split()
-        if len(parts) >= 7:
-            status = int(parts[-2])
-            size = int(parts[-1])
-            if size > 0 and status > 0:
-                status_codes[status] += 1
-                return size
-    except (ValueError, IndexError):
-        pass
+    valid_format = (re.match(r'^\S+ - \[.+\] "GET \S+ HTTP/1.1" \d{3} \d+$',
+                             line))
+    if valid_format:
+        try:
+            parts = line.split()
+            if len(parts) >= 7:
+                status = int(parts[-2])
+                size = int(parts[-1])
+                if size > 0 and status > 0:
+                    status_codes[status] += 1
+                    return size
+        except (ValueError, IndexError):
+            pass
     return 0
 
 
