@@ -33,7 +33,8 @@ def search_items(line, status_codes):
                     return size
         except (ValueError, IndexError):
             pass
-    return 0
+    else:
+        return None
 
 
 def print_statistics(total_size, status_codes):
@@ -49,10 +50,11 @@ def print_statistics(total_size, status_codes):
     Returns:
         None
     """
-    print("File size: {:d}".format(total_size))
-    for code, count in sorted(status_codes.items()):
-        if count > 0:
-            print("{}: {}".format(code, count))
+    if total_size > 0:
+        print("File size: {:d}".format(total_size))
+        for code, count in sorted(status_codes.items()):
+            if count > 0:
+                print("{}: {}".format(code, count))
 
 
 def main():
