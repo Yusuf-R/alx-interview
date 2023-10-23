@@ -33,8 +33,7 @@ def search_items(line, status_codes):
                     return size
         except (ValueError, IndexError):
             pass
-    else:
-        return None
+    return None
 
 
 def print_statistics(total_size, status_codes):
