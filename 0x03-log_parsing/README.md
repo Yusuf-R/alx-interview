@@ -1,7 +1,3 @@
-<p>
-<img width="260" height="170" src="https://www.flaticon.com/free-icon/log_2125009?term=logs&page=1&position=3" align="right" >
-</p>
-
 # :colombia: 0x06. Log Parsing
 
 - Write a script that reads stdin line by line and computes metrics:
@@ -35,17 +31,11 @@
 
     `./0-generator.py | ./0-stats.py`
 
-## Contributing
-
---Santiago Yanguas <br> - Holberton Student
 
 ## Versioning
 
 For my learning of Interviews in Holberton School
 
-## Authors
-
----Santiago Yanguas 946@holbertonshcool.com
 
 ## Files
 
