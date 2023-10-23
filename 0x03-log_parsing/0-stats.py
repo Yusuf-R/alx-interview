@@ -49,7 +49,7 @@ def print_statistics(total_size, status_codes):
     Returns:
         None
     """
-    print("File size: {}".format(total_size))
+    print("File size: {:d}".format(total_size))
     for code, count in sorted(status_codes.items()):
         if count > 0:
             print("{}: {}".format(code, count))
@@ -86,6 +86,7 @@ def main():
         pass
     finally:
         print_statistics(total_size, status_codes)
+        sys.exit(0)
 
 
 if __name__ == "__main__":
