@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 """A module that performs log parsing and statistics calculations."""
 
 import sys
