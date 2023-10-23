@@ -22,6 +22,8 @@ def search_items(line, status_codes):
     """
     valid_format = (re.match(r'^\S+ - \[.+\] "GET \S+ HTTP/1.1" \d{3} \d+$',
                              line))
+    if not valid_format:
+        return None
     if valid_format:
         try:
             parts = line.split()
