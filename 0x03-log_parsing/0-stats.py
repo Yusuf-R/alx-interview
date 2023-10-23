@@ -1,79 +1,49 @@
-#!/usr/bin/python3
-""" This is my problem :'v """
+#!/usr/bin/env python3
+
 import sys
-import re
-import signal
-from collections import OrderedDict
+from collections import defaultdict
 
 
-def search_items(line, s):
-    """Search the items to positionate"""
-    regexu = r"\s\d{3}\s\d{1,}"
-    txt = re.search(regexu, line)
-    word = txt.group()
-    word = word[1:]
-
-    regexd = r"\d{3}\s"
-    left = re.search(regexd, word)
-
-    code = left.group()
-    code = code[:-1]
-
-    regext = r"\s\d{1,}"
-    right = re.search(regext, word)
-
-    size = right.group()
-    size = size[1:]
-    size = int(size)
-
-    add_code(code, s)
-
-    return size
-
-
-def add_code(code, codes):
-    """Count the status code"""
+def search_items(line, status_codes):
     try:
-        codes[code] += 1
-    except KeyError:
+        parts = line.split()
+        if len(parts) >= 7:
+            status = int(parts[-2])
+            size = int(parts[-1])
+            if size > 0 and status > 0:
+                status_codes[status] += 1
+                return size
+    except (ValueError, IndexError):
         pass
+    return 0
 
 
-def print_all(stat):
-    """Print all"""
-    stat = OrderedDict(stat)
-
-    for key, value in stat.items():
-        if value != 0:
-            print("{}: {}".format(key, value))
+def print_statistics(total_size, status_codes):
+    print(f"File size: {total_size}")
+    for code, count in sorted(status_codes.items()):
+        if count > 0:
+            print(f"{code}: {count}")
 
 
-if __name__ == "__main__":
-    status = {
-        "200": 0,
-        "301": 0,
-        "400": 0,
-        "401": 0,
-        "403": 0,
-        "404": 0,
-        "405": 0,
-        "500": 0,
-    }
-    file_size = 0
+def main():
+    status_codes = defaultdict(int)
+    total_size = 0
     i = 0
 
     try:
-        for lines in sys.stdin:
-            file_size += search_items(lines, status)
+        for line in sys.stdin:
+            total_size += search_items(line, status_codes)
 
             if i != 0 and i % 9 == 0:
-                print("File size: {:d}".format(file_size))
-                print_all(status)
+                print_statistics(total_size, status_codes)
 
             i += 1
+
     except KeyboardInterrupt:
         pass
     finally:
-        print("File size: {:d}".format(file_size))
-        print_all(status)
-        sys.exit(0)
+        print_statistics(total_size, status_codes)
+
+
+if __name__ == "__main__":
+    main()
