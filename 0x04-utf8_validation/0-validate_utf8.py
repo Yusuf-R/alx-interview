@@ -14,7 +14,7 @@ def is_valid_continuation_byte(byte):
     START_BYTE_MASK = 1 << 7  # 10000000 in binary
     SECOND_BIT_MASK = 1 << 6  # 01000000 in binary
     # Check if the leftmost bit is 1 and the second leftmost bit is 0
-    if (byte & START_BYTE_MASK and not (byte & SECOND_BIT_MASK)):
+    if (byte & START_BYTE_MASK) and not (byte & SECOND_BIT_MASK):
         return True
     else:
         return False
@@ -32,7 +32,7 @@ def validUTF8(data):
         bool: True if data is a valid UTF-8 encoding, else return False.
     """
     # Ensure data will be represented by a list of integers
-    if type(data) != list:
+    if not isinstance(data, list):
         print("Entry data must be a list of integers")
         return False
     if not all(isinstance(num, int) for num in data):
