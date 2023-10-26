@@ -68,5 +68,5 @@ def validUTF8(data):
             # they represent [10xxxxx] for muli-byte sequences
             if not is_valid_continuation_byte(num):
                 return False
-            n_bytes -= 1
+        n_bytes -= 1
     return n_bytes == 0
