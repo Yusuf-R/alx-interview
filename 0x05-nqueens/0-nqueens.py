@@ -52,9 +52,6 @@ def solve_n_queens_util(board, col, N, solutions):
     Returns:
       bool: True if a solution was found, False otherwise.
     """
-
-
-def solve_n_queens_util(board, col, N, solutions):
     if col >= N:
         solutions.append([[i, board[i].index(1)] for i in range(N)])
         return True
