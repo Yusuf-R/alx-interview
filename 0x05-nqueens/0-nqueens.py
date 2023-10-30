@@ -28,7 +28,7 @@ def is_safe(board, row, col, N):
         if board[i][j] == 1:
             return False
 
-# sourcery skip: invert-any-all, remove-unit-step-from-range, use-any
+# sourcery skip: invert-any-all, remove-unit-step-from-range, use-any, use-next
     for i, j in zip(range(row, N, 1), range(col, -1, -1)):
         if board[i][j] == 1:
             return False
