@@ -1,34 +1,35 @@
 #!/usr/bin/node
-// Write a script that prints all characters of a Star Wars movie:
+
 const request = require('request');
 
-const url = 'https://swapi-api.hbtn.io/api/films/' + process.argv[2];
+const url = 'https://swapi-api.alx-tools.com/api/films/' + process.argv[2];
 
-request(url, function (error, response, body) {
-  if (error) {
-    console.error(error);
-    return;
-  }
-
-  if (response.statusCode !== 200) {
-    console.error('Error:', response.statusCode);
-    return;
-  }
-
-  const characters = JSON.parse(body).characters;
-  characters.forEach((character) => {
-    request(character, function (error, response, body) {
+function makeRequest (url) {
+  return new Promise((resolve, reject) => {
+    request(url, function (error, response, body) {
       if (error) {
-        console.error(error);
-        return;
+        reject(new Error(error)); // Pass an Error object as the rejection reason
+      } else if (response.statusCode !== 200) {
+        reject(new Error('Error: ' + response.statusCode)); // Pass an Error object as the rejection reason
+      } else {
+        resolve(JSON.parse(body));
       }
-
-      if (response.statusCode !== 200) {
-        console.error('Error:', response.statusCode);
-        return;
-      }
-
-      console.log(JSON.parse(body).name);
     });
   });
-});
+}
+
+async function fetchCharacters () {
+  try {
+    const filmData = await makeRequest(url);
+    const characters = filmData.characters;
+
+    for (const character of characters) {
+      const characterData = await makeRequest(character);
+      console.log(characterData.name);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+fetchCharacters();
