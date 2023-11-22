@@ -39,26 +39,8 @@ def makeChange(coins, total):
             count += 1
 
     # If total is reduced to 0, return the count
+    # otherwise return -1 as the operation is impossible for the given array of coins # noqa: 501
     if total == 0:
         return count
     else:
         return -1
-
-    # Initialize a list to store the minimum number of coins
-    # needed for each amount
-    # total has been decresed to some value greater than 0
-    # we create an array of size total + 1 and load it with
-    # [inf, inf, inf, inf, ...]
-    # assingn it to dp - dynamic programming
-    # dp = [float("inf")] * (total + 1)
-
-    # # Base case: 0 coins needed to make change for 0
-    # dp[0] = 0
-
-    # # Iterate through each coin and update the minimum number of coins needed
-    # for coin in coins:
-    #     for amount in range(coin, total + 1):
-    #         dp[amount] = min(dp[amount], dp[amount - coin] + 1)
-
-    # # If dp[total] is still set to infinity, it means the total cannot be met
-    # return dp[total] if dp[total] != float("inf") else -1
