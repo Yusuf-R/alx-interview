@@ -2,11 +2,10 @@
 """ Making Change
 """
 
-
 def makeChange(coins, total):
     """
     Calculates the minimum number of coins needed to make change for
-    a given total.
+    a given total using memoization.
 
     Parameters:
         coins (List[int]): A list of coin denominations.
@@ -16,20 +15,36 @@ def makeChange(coins, total):
         int: The minimum number of coins needed to make change for the
           given total. Returns -1 if change cannot be made.
     """
-    if total <= 0:
-        return 0
+    memo = {}
 
-    # Initialize a list to store the minimum number of coins
-    #  needed for each amount
-    dp = [float('inf')] * (total + 1)
+    def helper(amount):
+        """
+        Helper function for recursive memoized approach.
 
-    # Base case: 0 coins needed to make change for 0
-    dp[0] = 0
+        Parameters:
+            amount (int): The current amount for which change is being calculated.
 
-    # Iterate through each coin and update the minimum number of coins needed
-    for coin in coins:
-        for amount in range(coin, total + 1):
-            dp[amount] = min(dp[amount], dp[amount - coin] + 1)
+        Returns:
+            int: The minimum number of coins needed to make change for the
+              given amount.
+        """
+        if amount in memo:
+            return memo[amount]
 
-    # If dp[total] is still set to infinity, it means the total cannot be met
-    return dp[total] if dp[total] != float('inf') else -1
+        if amount == 0:
+            return 0
+
+        if amount < 0:
+            return float('inf')
+
+        min_coins = float('inf')
+        for coin in coins:
+            min_coins = min(min_coins, 1 + helper(amount - coin))
+
+        memo[amount] = min_coins
+        return min_coins
+
+    result = helper(total)
+
+    return result if result != float('inf') else -1
+
