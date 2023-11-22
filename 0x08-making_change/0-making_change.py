@@ -19,17 +19,26 @@ def makeChange(coins, total):
     if total <= 0:
         return 0
 
-    if coins == [] or coins is None:
+    if coins is None or not coins:
         return -1
-    try:
-        n = coins.index(total)
-        return 1
-    except ValueError:
-        pass
+
+    # Sort coins in descending order
+    coins.sort(reverse=True)
+
+    # Use a greedy approach to pick the largest coins first
+    count = 0
+    for coin in coins:
+        while total >= coin:
+            total -= coin
+            count += 1
+
+    # If total is reduced to 0, return the count
+    if total == 0:
+        return count
 
     # Initialize a list to store the minimum number of coins
-    #  needed for each amount
-    dp = [float('inf')] * (total + 1)
+    # needed for each amount
+    dp = [float("inf")] * (total + 1)
 
     # Base case: 0 coins needed to make change for 0
     dp[0] = 0
@@ -40,4 +49,4 @@ def makeChange(coins, total):
             dp[amount] = min(dp[amount], dp[amount - coin] + 1)
 
     # If dp[total] is still set to infinity, it means the total cannot be met
-    return dp[total] if dp[total] != float('inf') else -1
+    return dp[total] if dp[total] != float("inf") else -1
