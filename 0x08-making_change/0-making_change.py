@@ -19,6 +19,14 @@ def makeChange(coins, total):
     if total <= 0:
         return 0
 
+    if coins == [] or coins is None:
+        return -1
+    try:
+        n = coins.index(total)
+        return 1
+    except ValueError:
+        pass
+
     # Initialize a list to store the minimum number of coins
     #  needed for each amount
     dp = [float('inf')] * (total + 1)
