@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" 0-island_perimeter.py """
+"""island_perimeter"""
 
 
 def island_perimeter(grid: list[list[int]]) -> int:
