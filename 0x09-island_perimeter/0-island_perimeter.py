@@ -2,7 +2,7 @@
 """island_perimeter"""
 
 
-def island_perimeter(grid: list[list[int]]) -> int:
+def island_perimeter(grid):
     """
     Calculate the perimeter of an island described by a grid.
 
