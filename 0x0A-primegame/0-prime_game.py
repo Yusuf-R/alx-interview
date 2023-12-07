@@ -48,13 +48,8 @@ def play_game(n):
         number_set -= set(range(maria_choice, n + 1, maria_choice))
         # we check if no prime number is left in the updated set, if so
         # Maria wins the round
-        flag = 0
-        for num in number_set:
-            if check_prime(num):
-                flag = 1
-                break
-        if flag == 0:
-            # maria wins this round as no prime number is left
+        # If no primes left for Ben, Maria wins
+        if not any(check_prime(num) for num in number_set):
             return "Maria"
         # at this stage, we some number is left in the set for the next round # noqa: E501
         # Ben plays
