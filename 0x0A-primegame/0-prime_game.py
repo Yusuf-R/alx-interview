@@ -50,7 +50,7 @@ def play_game(number_set):
             return "Ben"
 
         # Remove the chosen number and its multiples from the set
-        number_set -= set(range(maria_choice, max(number_set) + 1, maria_choice))
+        number_set -= set(range(maria_choice, max(number_set) + 1, maria_choice))  # noqa: E501
 
         # Check if no prime number is left in the updated set,
         # Maria wins the round
