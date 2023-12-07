@@ -7,10 +7,8 @@ def check_prime(n):
     # sourcery skip: assign-if-exp, invert-any-all, reintroduce-else, use-any # noqa: E800
     """
     Checks if a number is prime.
-
     Args:
         n (int): The number to check for primality.
-
     Returns:
         bool: True if the number is prime, False otherwise.
     """
@@ -26,15 +24,11 @@ def check_prime(n):
 
 def play_game(number_set):
     """Plays a game of Prime Game.
-
     Args:
-        n (int): The number of rounds to play.
-
+        number_set (int{set} ): The set of numbers to play the game with.
     Returns:
         str: The winner of the game ('Maria' or 'Ben').
-
     """
-    # Create a set of numbers from 1 to n
     while number_set:
         # Maria will be the first to play
         maria_choice = None
@@ -48,7 +42,7 @@ def play_game(number_set):
         # If no prime number is found, Ben starts the next round
         if maria_choice is None:
             return "Ben"
-
+        # if that's not the case, thus maria has gotten a prime number
         # Remove the chosen number and its multiples from the set
         number_set -= set(range(maria_choice, max(number_set) + 1, maria_choice))  # noqa: E501
 
@@ -75,7 +69,8 @@ def play_game(number_set):
 
 
 def isWinner(x, nums):
-    """Determines the winner of a game based on the number of rounds and a list of numbers.
+    """
+    Determines the winner of a game based on the number of rounds and a list of numbers.
 
     Args:
         x (int): The number of rounds.
