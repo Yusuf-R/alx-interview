@@ -77,11 +77,6 @@ def isWinner(x, nums):
         If the winner cannot be determined,
             return None
     """
-    # You can assume n and x will not be larger than 10000
-    if x > 10000:
-        return None
-    if len(nums) > 10000:
-        return None
     # a dictionary to store counts
     score_board = {'Maria': 0, 'Ben': 0}
 
@@ -89,10 +84,6 @@ def isWinner(x, nums):
     if x < 1 or nums is None or len(nums) == 0:
         return None
 
-    # playing the game by calling the helper function
-    # game is played for x rounds
-    # Maria plays first
-    # Play each round and update the score_board
     for i in nums:
         winner = play_game(i)
         score_board[winner] += 1
