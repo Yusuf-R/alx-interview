@@ -85,6 +85,9 @@ def isWinner(x, nums):
     # Check if x is less than 1 or nums is None or empty
     if x < 1 or nums is None or len(nums) == 0:
         return None
+    # check if all the element in the nums are integers
+    if not all(isinstance(n, int) for n in nums):
+        return None
 
     for n in nums:
         # Play the game and determine the winner for each round
