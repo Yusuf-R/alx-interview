@@ -16,17 +16,15 @@ def check_prime(n):
     """
     if n < 2:
         return False
-
     # Check if n is divisible by any number from 2 to the square root of n.
     # If it is, then n is not prime.
     for i in range(2, int(n ** 0.5) + 1):
         if n % i == 0:
             return False
-
     return True
 
 
-def play_game(n):
+def play_game(number_set):
     """Plays a game of Prime Game.
 
     Args:
@@ -37,14 +35,12 @@ def play_game(n):
 
     """
     # Create a set of numbers from 1 to n
-    number_set = set(range(1, n + 1))
-
     while number_set:
         # Maria will be the first to play
         maria_choice = None
 
         # Check if a number in the set is prime
-        for num in number_set:
+        for num in sorted(number_set):
             if check_prime(num):
                 maria_choice = num
                 break
@@ -54,7 +50,7 @@ def play_game(n):
             return "Ben"
 
         # Remove the chosen number and its multiples from the set
-        number_set -= set(range(maria_choice, n + 1, maria_choice))
+        number_set -= set(range(maria_choice, max(number_set) + 1, maria_choice))
 
         # Check if no prime number is left in the updated set,
         # Maria wins the round
@@ -65,7 +61,7 @@ def play_game(n):
         ben_choice = None
 
         # Check if a prime number is left in the set
-        for num in number_set:
+        for num in sorted(number_set):
             if check_prime(num):
                 ben_choice = num
                 break
@@ -75,7 +71,7 @@ def play_game(n):
             return "Maria"
 
         # Remove Ben's choice and its multiples from the set
-        number_set -= set(range(ben_choice, n + 1, ben_choice))
+        number_set -= set(range(ben_choice, max(number_set) + 1, ben_choice))
 
 
 def isWinner(x, nums):
@@ -95,9 +91,10 @@ def isWinner(x, nums):
     if x < 1 or nums is None or len(nums) == 0:
         return None
 
-    for i in nums:
+    for n in nums:
         # Play the game and determine the winner for each round
-        winner = play_game(i)
+        numbers_set = set(range(1, n + 1))
+        winner = play_game(numbers_set)
         score_board[winner] += 1
 
     # Determine the overall winner
