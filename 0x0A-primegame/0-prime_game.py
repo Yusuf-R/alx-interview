@@ -14,6 +14,8 @@ def check_prime(n):
     """
     if n < 2:
         return False
+    if n in [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61]:  # noqa: E501
+        return True
     # Check if n is divisible by any number from 2 to the square root of n.
     # If it is, then n is not prime.
     for i in range(2, int(n ** 0.5) + 1):
@@ -93,13 +95,13 @@ def isWinner(x, nums):
     # check if x or nums is greater than 10000
     if x > 10000 or len(nums) > 10000:
         return None
-
     for n in nums:
         # Play the game and determine the winner for each round
         if n < 1:
             continue
         numbers_set = set(range(1, n + 1))
         winner = play_game(numbers_set)
+        print(winner)
         # Check if the winner is None (no winner for this round)
         if winner is not None:
             score_board[winner] += 1
