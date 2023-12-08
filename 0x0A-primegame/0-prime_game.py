@@ -83,14 +83,21 @@ def isWinner(x, nums):
     score_board = {'Maria': 0, 'Ben': 0}
 
     # Check if x is less than 1 or nums is None or empty
-    if x < 1 or nums is None or len(nums) == 0:
+    if x < 1 or nums is None or len(nums) == 0:  # noqa: E501
         return None
+
     # check if all the element in the nums are integers
     if not all(isinstance(n, int) for n in nums):
         return None
 
+    # check if x or nums is greater than 10000
+    if x > 10000 or len(nums) > 10000:
+        return None
+
     for n in nums:
         # Play the game and determine the winner for each round
+        if n < 1:
+            continue
         numbers_set = set(range(1, n + 1))
         winner = play_game(numbers_set)
         # Check if the winner is None (no winner for this round)
