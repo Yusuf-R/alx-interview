@@ -93,7 +93,11 @@ def isWinner(x, nums):
         # Play the game and determine the winner for each round
         numbers_set = set(range(1, n + 1))
         winner = play_game(numbers_set)
-        score_board[winner] += 1
+        # Check if the winner is None (no winner for this round)
+        if winner is not None:
+            score_board[winner] += 1
+        else:
+            continue
 
     # Determine the overall winner
     if score_board['Ben'] > score_board['Maria']:
