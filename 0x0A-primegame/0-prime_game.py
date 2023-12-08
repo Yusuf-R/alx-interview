@@ -14,7 +14,7 @@ def check_prime(n):
     """
     if n < 2:
         return False
-    if n in [2, 3, 5]:
+    if n == 2 or n == 3 or n == 5 or n == 7:
         return True
     # Check if n is divisible by any number from 2 to the square root of n.
     # If it is, then n is not prime.
