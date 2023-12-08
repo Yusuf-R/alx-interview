@@ -14,7 +14,7 @@ def check_prime(n):
     """
     if n < 2:
         return False
-    if n in [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97]:  # noqa: E501
+    if n in [2, 3, 5, 7]:
         return True
     # Check if n is divisible by any number from 2 to the square root of n.
     # If it is, then n is not prime.
