@@ -2,131 +2,111 @@
 """ Prime Game """
 
 
-def is_prime(n, primes):  # sourcery skip: square-identity
+# helper function
+def check_prime(n):
+    # sourcery skip: assign-if-exp, invert-any-all, reintroduce-else, use-any # noqa: E800
     """
-    Check if a number is prime.
-
+    Checks if a number is prime.
     Args:
-        n (int): The number to check.
-        primes (dict): A dictionary to store previously checked numbers and their primality.  # noqa
-
+        n (int): The number to check for primality.
     Returns:
         bool: True if the number is prime, False otherwise.
     """
-    # Check for numbers less than 2
     if n < 2:
         return False
-
-    # Check for numbers 2 and 3
-    if n < 4:
+    if n in [2, 3, 5, 7]:
         return True
-
-    # Check for divisibility by 2 or 3
-    if n % 2 == 0 or n % 3 == 0:
-        return False
-
-    # Check if the number has been previously checked
-    if n in primes:
-        return primes[n]
-
-    # Check for divisibility by numbers greater than 3
-    i = 5
-    w = 2
-    while i * i <= n:
+    # Check if n is divisible by any number from 2 to the square root of n.
+    # If it is, then n is not prime.
+    for i in range(2, int(n ** 0.5) + 1):
         if n % i == 0:
-            primes[n] = False
             return False
-        i += w
-        w = 6 - w
-
-    # If the number is prime, update the primes dictionary
-    primes[n] = True
     return True
 
 
-def play_game(number_set, primes):
-    """
-    Play a game based on a set of numbers and a list of prime numbers.
-
+def play_game(number_set):
+    """Plays a game of Prime Game.
     Args:
-        number_set (set): A set of numbers.
-        primes (list): A list of prime numbers.
-
+        number_set (int{set} ): The set of numbers to play the game with.
     Returns:
-        str: The winner of the game.
+        str: The winner of the game ('Maria' or 'Ben').
     """
     while number_set:
-        # Maria's turn
-        maria_choice = next(
-            (num for num in number_set if is_prime(num, primes)), None)
+        # Maria will be the first to play
+        maria_choice = None
 
+        # Check if a number in the set is prime
+        for num in sorted(number_set):
+            if check_prime(num):
+                maria_choice = num
+                break
+
+        # If no prime number is found, Ben starts the next round
         if maria_choice is None:
             return "Ben"
+        # if that's not the case, thus maria has gotten a prime number
+        # Remove the chosen number and its multiples from the set
+        number_set -= set(range(maria_choice, max(number_set) + 1, maria_choice))  # noqa: E501
 
-        number_set -= set(range(maria_choice,
-                          max(number_set) + 1, maria_choice))
-
-        if not any(is_prime(num, primes) for num in number_set):
+        # Check if no prime number is left in the updated set,
+        # Maria wins the round
+        if not any(check_prime(num) for num in number_set):
             return "Maria"
 
-        # Ben's turn
-        ben_choice = next(
-            (num for num in number_set if is_prime(num, primes)), None)
+        # Ben plays
+        ben_choice = None
 
+        # Check if a prime number is left in the set
+        for num in sorted(number_set):
+            if check_prime(num):
+                ben_choice = num
+                break
+
+        # If no prime number is found, Maria starts the next round
         if ben_choice is None:
             return "Maria"
 
+        # Remove Ben's choice and its multiples from the set
         number_set -= set(range(ben_choice, max(number_set) + 1, ben_choice))
 
 
 def isWinner(x, nums):
     """
-    Determine the winner of a game based on a set of numbers.
+    Determines the winner of a game based on the number of rounds and a list of numbers.
 
     Args:
-        x (int): The minimum value for the numbers set.
-        nums (list): A list of integers representing the numbers set.
+        x (int): The number of rounds.
+        nums (list): A list of numbers.
 
     Returns:
-        str or None: The name of the winner ('Ben' or 'Maria') or None if there is no winner.  # noqa
-
-    Raises:
-        TypeError: If nums is not a list or contains non-integer values.
-        ValueError: If x or the length of nums is greater than 10000.
-
+        The name of the player that won the most rounds. If the winner cannot be determined, return None. # noqa: E501
     """
-
-    # Initialize the score board
+    # A dictionary to store the counts of wins for each player
     score_board = {'Maria': 0, 'Ben': 0}
 
-    # Check for invalid input conditions
-    if x < 1 or nums is None or len(nums) == 0:
+    # Check if x is less than 1 or nums is None or empty
+    if x < 1 or nums is None or len(nums) == 0:  # noqa: E501
         return None
 
+    # check if all the element in the nums are integers
     if not all(isinstance(n, int) for n in nums):
-        raise TypeError("nums must be a list of integers")
+        return None
 
+    # check if x or nums is greater than 10000
     if x > 10000 or len(nums) > 10000:
-        raise ValueError(
-            "x and the length of nums must be less than or equal to 10000")
+        return None
 
-    # Initialize the primes set
-    primes = {2: True, 3: True}
-
-    # Iterate over the numbers set
     for n in nums:
+        # Play the game and determine the winner for each round
         if n < 1:
             continue
-
-        # Generate the numbers set based on the current number
-        numbers_set = set(range(2, n + 1, 2)) if n > 2 else {2}
-
-        # Play the game and determine the winner
-        winner = play_game(numbers_set, primes)
-
-        # Update the score board
+        numbers_set = set(range(1, n + 1))
+        winner = play_game(numbers_set)
+        # Check if the winner is None (no winner for this round)
         if winner is not None:
             score_board[winner] += 1
+        else:
+            continue
 
     # Determine the overall winner
     if score_board['Ben'] > score_board['Maria']:
